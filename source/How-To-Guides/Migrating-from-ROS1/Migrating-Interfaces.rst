@@ -1,3 +1,7 @@
+.. meta::
+   :area: ROS-framework
+   :experience: beginner, intermediate
+
 Migrating Interfaces
 ====================
 
