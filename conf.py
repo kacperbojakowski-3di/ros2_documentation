@@ -91,38 +91,7 @@ extensions = [
     'sphinxcontrib.mermaid',
     'ros_related_packages',
     'ros_related_articles',
-    'short_description',
-    'pagefind_meta',
-    'showmeta',
 ]
-
-# pagefind search index configuration.
-
-pagefind_merge_enabled = False
-pagefind_merge_package_pkgs = []
-pagefind_merge_index_base = 'https://docs.ros.org'
-pagefind_merge_index_overrides = {}
-pagefind_merge_filter_per_pkg = None
-pagefind_merge_index_weight_per_pkg = None
-
-# Pagefind search UI (modal + /search.html): result metadata lines and facet sidebar.
-# Dict keys = .. meta:: field names; values = display labels.
-# Order here is facet dropdown order and result-meta line order (allowlist).
-# Only listed keys are indexed as facets; keys must exist on at least one page in the build.
-# Other meta (e.g. description, keywords) stays SEO-only and does not appear in the facet sidebar.
-
-pagefind_result_meta_order = {
-    'product': 'Product',
-    'distribution': 'Distribution',
-    'area': 'Area',
-    'capability': 'Capability',
-    'community': 'Community',
-    'installation': 'Installation',
-    'framework': 'Framework',
-    'tool': 'Tools',
-    'contentType': 'Content type',
-    'experience': 'Level',
-}
 
 # Intersphinx mapping
 
@@ -195,37 +164,12 @@ distro_full_names = {
     'rolling': 'Rolling Ridley',
 }
 
-# Tier 1 Ubuntu platform for binary deb installs (see the release page for each distro)
-distro_ubuntu_deb_platform = {
-    'crystal': 'Ubuntu Bionic (18.04)',
-    'dashing': 'Ubuntu Bionic (18.04)',
-    'eloquent': 'Ubuntu Bionic (18.04)',
-    'foxy': 'Ubuntu Focal (20.04)',
-    'galactic': 'Ubuntu Focal (20.04)',
-    'humble': 'Ubuntu Jammy (22.04)',
-    'iron': 'Ubuntu Jammy (22.04)',
-    'jazzy': 'Ubuntu Noble (24.04)',
-    'kilted': 'Ubuntu Noble (24.04)',
-    'lyrical': 'Ubuntu Resolute Raccoon (26.04)',
-    'rolling': 'Ubuntu Resolute Raccoon (26.04)',
-}
-
-# ARM64 Ubuntu status page suffix on repo.ros2.org (ros_{distro}_{suffix}.html)
-distro_arm_status_suffix = {
-    'humble': 'ujv8',
-    'iron': 'ujv8',
-    'lyrical': 'armv8',
-}
-
 # These default values will be overridden when building multiversion
 macros = {
     'DISTRO': 'rolling',
     'DISTRO_TITLE': 'Rolling',
     'DISTRO_TITLE_FULL': 'Rolling Ridley',
-    'DISTRO_UBUNTU_DEB_PLATFORM': distro_ubuntu_deb_platform['rolling'],
-    'DISTRO_ARM_STATUS_SUFFIX': distro_arm_status_suffix.get('rolling', 'unv8'),
     'REPOS_FILE_BRANCH': 'rolling',
-    'PRODUCT': 'ROS 2',
 }
 
 html_favicon = 'favicon.ico'
@@ -239,7 +183,7 @@ html_static_path = ['source/_static']
 html_sourcelink_suffix = ''
 
 # Relative to html_static_path
-html_css_files = ['custom.css', 'adopters.css', 'pagefind-docsearch.css']
+html_css_files = ['custom.css', 'adopters.css']
 html_js_files = [
     ('vendor/pako.min.js', {'defer': ''}),
     ('vendor/js-yaml.min.js', {'defer': ''}),
@@ -422,10 +366,6 @@ def smv_rewrite_configs(app, config):
             'DISTRO': distro,
             'DISTRO_TITLE': distro.title(),
             'DISTRO_TITLE_FULL': distro_full_names[distro],
-            'DISTRO_UBUNTU_DEB_PLATFORM': distro_ubuntu_deb_platform.get(
-                distro, 'Ubuntu Noble (24.04)'
-            ),
-            'DISTRO_ARM_STATUS_SUFFIX': distro_arm_status_suffix.get(distro, 'unv8'),
             'REPOS_FILE_BRANCH' : distro,
         }
 
