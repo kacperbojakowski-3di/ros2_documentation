@@ -308,9 +308,19 @@
       return a.localeCompare(b);
     });
     var picked = names.slice(0, max);
+    var prevList = el.previousElementSibling;
+    prevList = prevList && prevList.tagName === 'UL' ? prevList : null;
+    var nextList = el.nextElementSibling;
+    nextList = nextList && nextList.tagName === 'UL' ? nextList : null;
+    var mergeList;
 
-    var ul = document.createElement('ul');
-    ul.className = 'related-packages__list';
+    if (prevList) {
+      mergeList = prevList;
+    } else {
+      mergeList = document.createElement('ul');
+      mergeList.className = 'related-packages__list';
+    }
+
     var j;
     for (j = 0; j < picked.length; j += 1) {
       var pkg = picked[j];
@@ -322,24 +332,46 @@
       a.rel = 'noopener noreferrer';
       li.appendChild(a);
       li.appendChild(document.createTextNode(': ' + description));
-      ul.appendChild(li);
+      mergeList.appendChild(li);
     }
 
-    el.innerHTML = '';
     el.classList.remove('related-packages--loading');
 
     if (picked.length === 0) {
+      el.innerHTML = '';
+      if (prevList && nextList) {
+        while (nextList.firstChild) {
+          prevList.appendChild(nextList.firstChild);
+        }
+        nextList.remove();
+        prevList.classList.add('related-packages__list');
+      }
+      if (prevList || nextList) {
+        el.remove();
+        return;
+      }
       var p = document.createElement('p');
       p.className = 'related-packages__empty';
       p.textContent = 'No packages matched this filter.';
       el.appendChild(p);
-    } else {
-      var intro = document.createElement('p');
-      intro.className = 'related-packages__intro';
-      intro.textContent = 'Packages/reference: ';
-      el.appendChild(intro);
-      el.appendChild(ul);
+      return;
     }
+
+    if (nextList) {
+      while (nextList.firstChild) {
+        mergeList.appendChild(nextList.firstChild);
+      }
+      nextList.remove();
+    }
+
+    if (prevList) {
+      mergeList.classList.add('related-packages__list');
+      el.remove();
+      return;
+    }
+
+    el.parentNode.insertBefore(mergeList, el);
+    el.remove();
   }
 
   function fillAll() {

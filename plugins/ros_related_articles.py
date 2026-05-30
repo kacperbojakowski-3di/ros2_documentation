@@ -87,20 +87,114 @@ def _normalized_value(raw: str) -> str:
     return ' '.join(raw.strip().lower().split())
 
 
+def _previous_sibling(node: nodes.Node) -> nodes.Node | None:
+    """Return the node immediately before *node* among its parent's children."""
+    parent = node.parent
+    if parent is None:
+        return None
+    children = parent.children
+    idx = children.index(node)
+    if idx == 0:
+        return None
+    return children[idx - 1]
+
+
+def _next_sibling(node: nodes.Node) -> nodes.Node | None:
+    """Return the node immediately after *node* among its parent's children."""
+    parent = node.parent
+    if parent is None:
+        return None
+    children = parent.children
+    idx = children.index(node)
+    if idx + 1 >= len(children):
+        return None
+    return children[idx + 1]
+
+
+def _ensure_class(node: nodes.Element, class_name: str) -> None:
+    """Append *class_name* to *node* if it is not already present."""
+    classes = list(node.get('classes', []) or [])
+    if class_name not in classes:
+        classes.append(class_name)
+        node['classes'] = classes
+
+
+def _append_article_items(
+    bullet_list: nodes.bullet_list,
+    matches: List[RelatedArticle],
+    app,
+    fromdocname: str,
+) -> None:
+    """Append related-article links as list items to *bullet_list*."""
+    for item in matches:
+        refuri = app.builder.get_relative_uri(fromdocname, item['docname'])
+        link = nodes.reference('', item['title'], refuri=refuri)
+        entry = nodes.list_item()
+        para = nodes.paragraph()
+        para += link
+        entry += para
+        bullet_list += entry
+
+
+def _absorb_bullet_list(
+    target: nodes.bullet_list,
+    source: nodes.bullet_list,
+) -> None:
+    """Move all list items from *source* onto the end of *target*."""
+    for child in list(source.children):
+        if isinstance(child, nodes.list_item):
+            source.remove(child)
+            target.append(child)
+
+
+def _resolve_related_articles_list(
+    node: RosRelatedArticlesNode,
+    matches: List[RelatedArticle],
+    app,
+    fromdocname: str,
+) -> None:
+    """Replace *node* with generated links, merging adjacent manual bullet lists."""
+    prev = _previous_sibling(node)
+    next_sib = _next_sibling(node)
+    prev_list = prev if isinstance(prev, nodes.bullet_list) else None
+    next_list = next_sib if isinstance(next_sib, nodes.bullet_list) else None
+
+    if prev_list is not None:
+        target = prev_list
+        _ensure_class(target, 'related-articles')
+    else:
+        target = nodes.bullet_list(classes=['related-articles'])
+
+    _append_article_items(target, matches, app, fromdocname)
+
+    if next_list is not None:
+        _absorb_bullet_list(target, next_list)
+        next_list.replace_self([])
+
+    if prev_list is not None:
+        node.replace_self([])
+    else:
+        node.replace_self(target)
+
+
 class RosRelatedArticlesNode(nodes.General, nodes.Element):
     """Placeholder node replaced during ``doctree-resolved``."""
 
 
 class RosRelatedArticlesDirective(SphinxDirective):
-    """Emit a placeholder for static related-article links.
+    """Emit a placeholder replaced by a bullet list of related article links.
 
-    Uses page metadata values from ``.. meta::``:
+    Write the section intro (e.g. ``Related articles:``) in the RST source
+    before this directive. Optional bullet items immediately before or after
+    the directive are merged into the same list as the generated links.
 
     .. code-block:: rst
 
        .. meta::
           :area: Tutorials
           :experience: Beginner
+
+    Uses page metadata values from ``.. meta::`` (see above).
     """
 
     has_content = False
@@ -173,7 +267,7 @@ def build_related_articles_index(app, env) -> None:
 
 
 def resolve_related_articles(app, doctree, fromdocname) -> None:
-    """Replace placeholders with static paragraph + list markup."""
+    """Replace placeholders with a static bullet list."""
     index: List[RelatedArticle] = getattr(app.env, 'ros_related_articles_index', [])
     for node in list(doctree.traverse(RosRelatedArticlesNode)):
         area = _normalized_value(str(node.get('area', '')))
@@ -189,27 +283,19 @@ def resolve_related_articles(app, doctree, fromdocname) -> None:
         matches.sort(key=lambda item: item['title'].lower())
         matches = matches[:max_items]
 
+        prev = _previous_sibling(node)
+        next_sib = _next_sibling(node)
+        prev_list = prev if isinstance(prev, nodes.bullet_list) else None
+        next_list = next_sib if isinstance(next_sib, nodes.bullet_list) else None
+
         if not matches:
+            if prev_list is not None and next_list is not None:
+                _absorb_bullet_list(prev_list, next_list)
+                next_list.replace_self([])
             node.replace_self([])
             continue
 
-        container = nodes.container(classes=['related-articles'])
-        intro = nodes.paragraph()
-        intro += nodes.Text('Related articles:')
-        container += intro
-
-        bullets = nodes.bullet_list()
-        for item in matches:
-            refuri = app.builder.get_relative_uri(fromdocname, item['docname'])
-            link = nodes.reference('', item['title'], refuri=refuri)
-            entry = nodes.list_item()
-            para = nodes.paragraph()
-            para += link
-            entry += para
-            bullets += entry
-        container += bullets
-
-        node.replace_self(container)
+        _resolve_related_articles_list(node, matches, app, fromdocname)
 
 
 def setup(app):

@@ -59,4 +59,6 @@ This will replace ``add_message_files`` and ``add_service_files`` listing of all
 Related content
 ---------------
 
+Related articles:
+
 .. ros-related-articles::

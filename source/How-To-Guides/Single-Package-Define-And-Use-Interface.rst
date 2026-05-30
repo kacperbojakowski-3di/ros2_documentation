@@ -262,7 +262,13 @@ Steps
 Related content
 ---------------
 
+Related articles:
+
+* some stuff here
+
 .. ros-related-articles::
+
+Packages/reference:
 
 .. ros-related-packages::
 

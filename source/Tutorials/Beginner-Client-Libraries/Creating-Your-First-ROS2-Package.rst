@@ -545,4 +545,6 @@ You'll start with a simple publisher/subscriber system, which you can choose to 
 Related content
 ---------------
 
+Related articles:
+
 .. ros-related-articles::

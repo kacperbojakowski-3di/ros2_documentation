@@ -109,6 +109,10 @@ def _positive_int_option(argument: str) -> int:
 class RosRelatedPackagesDirective(SphinxDirective):
     """Emit a placeholder ``div`` filled at runtime by ``related_packages.js``.
 
+    Write the section intro (e.g. ``Packages/reference:``) in the RST source
+    before this directive. Optional bullet items immediately before or after
+    the directive are merged into the same list at runtime.
+
     Filter criteria (currently ``build-type``) should be supplied as **HTML meta tags**
     via Docutils ``.. meta::`` so values appear in ``<head>`` and not in the page body::
 
