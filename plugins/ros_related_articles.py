@@ -16,7 +16,7 @@
 
 from __future__ import annotations
 
-from typing import List, TypedDict
+from typing import List, Set, TypedDict
 
 from docutils import nodes
 from docutils.parsers.rst import directives
@@ -147,6 +147,40 @@ def _absorb_bullet_list(
             target.append(child)
 
 
+def _docname_from_refuri(app, fromdocname: str, refuri: str) -> str | None:
+    """Map an internal ``refuri`` on *fromdocname* to a Sphinx docname."""
+    if not refuri or '://' in refuri:
+        return None
+    refuri_base = refuri.split('#', 1)[0]
+    if not refuri_base:
+        return None
+    builder = app.builder
+    for candidate in app.env.found_docs:
+        if builder.get_relative_uri(fromdocname, candidate) == refuri_base:
+            return candidate
+    return None
+
+
+def _manual_docnames_from_lists(
+    app,
+    fromdocname: str,
+    *bullet_lists: nodes.bullet_list | None,
+) -> Set[str]:
+    """Collect docnames linked from manual bullet items adjacent to the directive."""
+    docnames: Set[str] = set()
+    for blist in bullet_lists:
+        if blist is None:
+            continue
+        for ref in blist.traverse(nodes.reference):
+            refuri = ref.get('refuri')
+            if not refuri:
+                continue
+            docname = _docname_from_refuri(app, fromdocname, refuri)
+            if docname:
+                docnames.add(docname)
+    return docnames
+
+
 def _resolve_related_articles_list(
     node: RosRelatedArticlesNode,
     matches: List[RelatedArticle],
@@ -187,6 +221,7 @@ class RosRelatedArticlesDirective(SphinxDirective):
     Write the section intro (e.g. ``Related articles:``) in the RST source
     before this directive. Optional bullet items immediately before or after
     the directive are merged into the same list as the generated links.
+    Auto-generated entries that duplicate a manual link target are omitted.
 
     .. code-block:: rst
 
@@ -280,13 +315,22 @@ def resolve_related_articles(app, doctree, fromdocname) -> None:
             and item['area'] == area
             and item['experience'] == experience
         ]
-        matches.sort(key=lambda item: item['title'].lower())
-        matches = matches[:max_items]
-
         prev = _previous_sibling(node)
         next_sib = _next_sibling(node)
         prev_list = prev if isinstance(prev, nodes.bullet_list) else None
         next_list = next_sib if isinstance(next_sib, nodes.bullet_list) else None
+
+        manual_docnames = _manual_docnames_from_lists(
+            app, fromdocname, prev_list, next_list,
+        )
+        if manual_docnames:
+            matches = [
+                item for item in matches
+                if item['docname'] not in manual_docnames
+            ]
+
+        matches.sort(key=lambda item: item['title'].lower())
+        matches = matches[:max_items]
 
         if not matches:
             if prev_list is not None and next_list is not None:
@@ -306,5 +350,5 @@ def setup(app):
     return {
         'parallel_read_safe': True,
         'parallel_write_safe': True,
-        'version': '1.0.0',
+        'version': '1.1.0',
     }

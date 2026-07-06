@@ -2,6 +2,23 @@
     max-width: 64rem;
 }
 
+.related-packages__expand {
+    display: block;
+    margin: 0.35rem 0 0.75rem 1.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #2980b9;
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+}
+
+.related-packages__expand:hover,
+.related-packages__expand:focus {
+    text-decoration: underline;
+}
+
 .short-description p{
     font-size: 1.25rem;
     line-height: 1.5;

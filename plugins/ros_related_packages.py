@@ -33,6 +33,9 @@ ROSDISTRO_CACHE_TEMPLATE = (
     'https://repo.ros2.org/rosdistro_cache/{distro}-cache.yaml.gz'
 )
 
+DEFAULT_RELATED_PACKAGES_MAX = 25
+DEFAULT_RELATED_PACKAGES_VISIBLE_MAX = 7
+
 
 def _normalize_field_name(raw: str) -> str:
     """Normalize a docinfo field label for comparison (e.g. ``Build-type`` → ``build-type``)."""
@@ -112,6 +115,10 @@ class RosRelatedPackagesDirective(SphinxDirective):
     Write the section intro (e.g. ``Packages/reference:``) in the RST source
     before this directive. Optional bullet items immediately before or after
     the directive are merged into the same list at runtime.
+    Auto-generated entries that duplicate a manual package link are omitted.
+
+    By default up to 25 packages are loaded (alphabetical); the first 7 are
+    shown with a control to reveal the rest.
 
     Filter criteria (currently ``build-type``) should be supplied as **HTML meta tags**
     via Docutils ``.. meta::`` so values appear in ``<head>`` and not in the page body::
@@ -151,7 +158,7 @@ class RosRelatedPackagesDirective(SphinxDirective):
                 'or pass `:build-type:` on this directive.'
             )
 
-        max_pkgs = self.options.get('max', 10)
+        max_pkgs = self.options.get('max', DEFAULT_RELATED_PACKAGES_MAX)
 
         macros = getattr(self.env.config, 'macros', {}) or {}
         distro = macros.get('DISTRO', 'rolling')
@@ -168,6 +175,7 @@ class RosRelatedPackagesDirective(SphinxDirective):
             '<div class="related-packages related-packages--loading js-related-packages" '
             f'data-build-type="{escaped_type}" '
             f'data-max="{int(max_pkgs)}" '
+            f'data-visible-max="{DEFAULT_RELATED_PACKAGES_VISIBLE_MAX}" '
             f'data-distro="{escaped_distro}" '
             f'data-bundled-cache-href="{escaped_bundled}" '
             f'data-proxy-cache-href="{escaped_proxy}" '
@@ -218,5 +226,5 @@ def setup(app):
     return {
         'parallel_read_safe': True,
         'parallel_write_safe': True,
-        'version': '1.0.0',
+        'version': '1.2.0',
     }

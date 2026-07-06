@@ -289,17 +289,148 @@
   }
 
   /**
+   * @param {HTMLAnchorElement} anchor
+   * @returns {string|null}
+   */
+  function packageNameFromManualLink(anchor) {
+    var href = anchor.getAttribute('href') || '';
+    var match = /\/p\/([^/?#]+)\/?/.exec(href);
+    if (match) {
+      try {
+        return decodeURIComponent(match[1]);
+      } catch (e1) {
+        return match[1];
+      }
+    }
+    var text = (anchor.textContent || '').trim();
+    if (text && text.indexOf(' ') === -1) {
+      return text;
+    }
+    return null;
+  }
+
+  /**
+   * @param {HTMLUListElement|null} prevList
+   * @param {HTMLUListElement|null} nextList
+   * @returns {Record<string, boolean>}
+   */
+  function manualPackageNames(prevList, nextList) {
+    var names = Object.create(null);
+
+    function scan(ul) {
+      var links;
+      var i;
+      var pkg;
+      if (!ul) {
+        return;
+      }
+      links = ul.querySelectorAll('li a[href]');
+      for (i = 0; i < links.length; i += 1) {
+        pkg = packageNameFromManualLink(links[i]);
+        if (pkg) {
+          names[pkg] = true;
+        }
+      }
+    }
+
+    scan(prevList);
+    scan(nextList);
+    return names;
+  }
+
+  /**
+   * @param {string} pkg
+   * @param {Record<string, string>} xmls
+   * @param {string} distro
+   * @param {boolean} collapsed
+   * @returns {HTMLLIElement}
+   */
+  function createPackageListItem(pkg, xmls, distro, collapsed) {
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    var description = extractDescription(xmls[pkg] || '');
+    a.href = docsPackageUrl(distro, pkg);
+    a.textContent = pkg;
+    a.rel = 'noopener noreferrer';
+    li.appendChild(a);
+    li.appendChild(document.createTextNode(': ' + description));
+    if (collapsed) {
+      li.className = 'related-packages__item--extra';
+      li.hidden = true;
+    }
+    return li;
+  }
+
+  /**
+   * @param {HTMLUListElement} listEl
+   * @param {number} hiddenCount
+   * @param {HTMLElement|null} insertBeforeEl
+   */
+  function attachExpandControl(listEl, hiddenCount, insertBeforeEl) {
+    var btn;
+    var noun;
+    var extras;
+    var i;
+    if (hiddenCount < 1) {
+      return;
+    }
+    noun = hiddenCount === 1 ? 'package' : 'packages';
+    btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'related-packages__expand';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', listEl.id || '');
+    if (!listEl.id) {
+      listEl.id = 'related-packages-list-' + Math.random().toString(36).slice(2, 9);
+      btn.setAttribute('aria-controls', listEl.id);
+    }
+    btn.textContent = 'Show ' + hiddenCount + ' more ' + noun;
+
+    btn.addEventListener('click', function () {
+      extras = listEl.querySelectorAll('.related-packages__item--extra');
+      if (btn.getAttribute('aria-expanded') === 'true') {
+        for (i = 0; i < extras.length; i += 1) {
+          extras[i].hidden = true;
+        }
+        btn.setAttribute('aria-expanded', 'false');
+        btn.textContent = 'Show ' + hiddenCount + ' more ' + noun;
+      } else {
+        for (i = 0; i < extras.length; i += 1) {
+          extras[i].hidden = false;
+        }
+        btn.setAttribute('aria-expanded', 'true');
+        btn.textContent = 'Show fewer';
+      }
+    });
+
+    if (insertBeforeEl && insertBeforeEl.parentNode) {
+      insertBeforeEl.parentNode.insertBefore(btn, insertBeforeEl);
+    } else if (listEl.parentNode) {
+      listEl.parentNode.insertBefore(btn, listEl.nextSibling);
+    }
+  }
+
+  /**
    * @param {HTMLElement} el
    * @param {Record<string, string>} xmls
    */
   function fillWidget(el, xmls) {
     var want = el.getAttribute('data-build-type') || '';
-    var max = parseInt(el.getAttribute('data-max') || '10', 10);
+    var max = parseInt(el.getAttribute('data-max') || '25', 10);
+    var visibleMax = parseInt(el.getAttribute('data-visible-max') || '7', 10);
     var distro = el.getAttribute('data-distro') || 'rolling';
+    var prevList = el.previousElementSibling;
+    prevList = prevList && prevList.tagName === 'UL' ? prevList : null;
+    var nextList = el.nextElementSibling;
+    nextList = nextList && nextList.tagName === 'UL' ? nextList : null;
+    var excluded = manualPackageNames(prevList, nextList);
 
     var names = Object.keys(xmls).filter(function (name) {
       var xmlStr = xmls[name];
       if (typeof xmlStr !== 'string') {
+        return false;
+      }
+      if (excluded[name]) {
         return false;
       }
       return matchesBuildType(xmlStr, want);
@@ -308,10 +439,7 @@
       return a.localeCompare(b);
     });
     var picked = names.slice(0, max);
-    var prevList = el.previousElementSibling;
-    prevList = prevList && prevList.tagName === 'UL' ? prevList : null;
-    var nextList = el.nextElementSibling;
-    nextList = nextList && nextList.tagName === 'UL' ? nextList : null;
+    var hiddenCount = picked.length > visibleMax ? picked.length - visibleMax : 0;
     var mergeList;
 
     if (prevList) {
@@ -323,16 +451,9 @@
 
     var j;
     for (j = 0; j < picked.length; j += 1) {
-      var pkg = picked[j];
-      var li = document.createElement('li');
-      var a = document.createElement('a');
-      var description = extractDescription(xmls[pkg] || '');
-      a.href = docsPackageUrl(distro, pkg);
-      a.textContent = pkg;
-      a.rel = 'noopener noreferrer';
-      li.appendChild(a);
-      li.appendChild(document.createTextNode(': ' + description));
-      mergeList.appendChild(li);
+      mergeList.appendChild(
+        createPackageListItem(picked[j], xmls, distro, j >= visibleMax)
+      );
     }
 
     el.classList.remove('related-packages--loading');
@@ -366,11 +487,17 @@
 
     if (prevList) {
       mergeList.classList.add('related-packages__list');
+      if (hiddenCount > 0) {
+        attachExpandControl(mergeList, hiddenCount, el);
+      }
       el.remove();
       return;
     }
 
     el.parentNode.insertBefore(mergeList, el);
+    if (hiddenCount > 0) {
+      attachExpandControl(mergeList, hiddenCount, el);
+    }
     el.remove();
   }
 
