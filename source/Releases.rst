@@ -1,7 +1,3 @@
-.. redirect-from::
-
-    Releases
-
 .. _Releases:
 
 Distributions
