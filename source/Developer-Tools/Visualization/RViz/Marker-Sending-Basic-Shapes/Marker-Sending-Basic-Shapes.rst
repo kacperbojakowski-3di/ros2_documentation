@@ -30,11 +30,11 @@ Summary
 RViz draws 3D data from your ROS system, such as robot models, sensor readings, and primitive shapes.
 A display is an RViz plugin that draws one kind of data in the 3D view.
 
-The ``Marker`` display can show shapes that a node publishes as ``visualization_msgs/msg/Marker`` messages.
+The Marker display can show shapes that a node publishes as ``visualization_msgs/msg/Marker`` messages.
 RViz does not need to know the meaning of that data ahead of time.
 
 This tutorial uses a small publisher that cycles through a cube, sphere, arrow, and cylinder.
-Use that publisher as sample data for setup, viewing, and camera control in RViz.
+Its markers give you sample data for setup, viewing, and camera control in RViz.
 
 For a broader RViz reference, see :doc:`RViz User Guide <../RViz-User-Guide/RViz-User-Guide>`.
 
@@ -192,7 +192,7 @@ The keyboard shortcut is ``m``.
 When **Move Camera** is selected, clicking in the 3D view moves the camera using the current view type.
 
 Stay on **Orbit** for this step.
-The focal point is shown as a small disc while you move the camera:
+RViz shows the focal point as a small disc while you move the camera:
 
 .. image:: ../RViz-User-Guide/images/focal-point.png
 
@@ -204,7 +204,7 @@ Try the following:
   Drag up to zoom in, and down to zoom out.
 * **Scroll wheel**: Zoom in and out of the focal point.
 
-The status bar also summarizes these controls when **Move Camera** is selected: left-click rotates, middle-click moves, right-click or the scroll wheel zooms.
+The status bar also summarizes these controls when **Move Camera** is selected.
 
 Rotate, pan, and zoom until you can see the changing marker clearly against the grid.
 
