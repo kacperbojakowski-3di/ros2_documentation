@@ -48,8 +48,8 @@ Steps
 -----
 
 .. note::
-
    Source ROS in every new terminal you open.
+   See :doc:`Configuring environment <../../../../Get-Started/Configuring-ROS2-Environment>`.
    After you build the tutorial package, also source your workspace overlay.
 
 1 Get the marker publisher
@@ -63,7 +63,6 @@ The ``-b`` option selects the branch for this ROS distribution:
 
 .. code-block:: console
 
-   $ source /opt/ros/{DISTRO}/setup.bash
    $ cd ~/ros2_ws/src
    $ git clone -b {REPOS_FILE_BRANCH} https://github.com/ros-visualization/visualization_tutorials.git
    $ cd ~/ros2_ws
@@ -74,11 +73,10 @@ If your workspace is not ``~/ros2_ws``, use your workspace path instead.
 2 Start the marker publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Open a **new** terminal, source ROS and your workspace overlay, and run ``basic_shapes``:
+Open a new terminal, source your workspace overlay, and run ``basic_shapes``:
 
 .. code-block:: console
 
-   $ source /opt/ros/{DISTRO}/setup.bash
    $ cd ~/ros2_ws
    $ source install/setup.bash
    $ ros2 run visualization_marker_tutorials basic_shapes
@@ -92,11 +90,10 @@ You do not need to edit it for this tutorial.
 3 Start RViz
 ^^^^^^^^^^^^
 
-Open a **new** terminal, source your ROS installation, and start RViz:
+Open a new terminal and start RViz:
 
 .. code-block:: console
 
-   $ source /opt/ros/{DISTRO}/setup.bash
    $ ros2 run rviz2 rviz2
 
 You do not need the workspace overlay in this terminal.
