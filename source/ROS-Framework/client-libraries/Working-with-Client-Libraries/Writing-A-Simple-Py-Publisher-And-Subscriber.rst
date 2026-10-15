@@ -105,7 +105,6 @@ Open the file using your preferred text editor.
 
   from std_msgs.msg import String
 
-
   class MinimalPublisher(Node):
 
       def __init__(self):
@@ -122,7 +121,6 @@ Open the file using your preferred text editor.
           self.get_logger().info('Publishing: "%s"' % msg.data)
           self.i += 1
 
-
   def main(args=None):
       try:
           with rclpy.init(args=args):
@@ -132,10 +130,8 @@ Open the file using your preferred text editor.
       except (KeyboardInterrupt, ExternalShutdownException):
           pass
 
-
   if __name__ == '__main__':
       main()
-
 
 2.1 Examine the code
 ~~~~~~~~~~~~~~~~~~~~
@@ -204,7 +200,6 @@ Lastly, the main function is defined.
               rclpy.spin(minimal_publisher)
       except (KeyboardInterrupt, ExternalShutdownException):
           pass
-
 
 First the {package(rclpy)} library is initialized, then the node is created, and then it "spins" the node (using `spin() <{package_link(rclpy)}api/init_shutdown.html#rclpy.spin>`__) so its callbacks are called.
 
@@ -328,7 +323,6 @@ Open the ``subscriber_member_function.py`` with your text editor.
 
   from std_msgs.msg import String
 
-
   class MinimalSubscriber(Node):
 
       def __init__(self):
@@ -343,7 +337,6 @@ Open the ``subscriber_member_function.py`` with your text editor.
       def listener_callback(self, msg):
           self.get_logger().info('I heard: "%s"' % msg.data)
 
-
   def main(args=None):
       try:
           with rclpy.init(args=args):
@@ -352,7 +345,6 @@ Open the ``subscriber_member_function.py`` with your text editor.
               rclpy.spin(minimal_subscriber)
       except (KeyboardInterrupt, ExternalShutdownException):
           pass
-
 
   if __name__ == '__main__':
       main()
@@ -391,7 +383,6 @@ The ``main`` definition is almost exactly the same, replacing the creation and s
 Since this node has the same dependencies as the publisher, there's nothing new to add to ``package.xml``.
 The ``setup.cfg`` file can also remain untouched.
 
-
 3.2 Add an entry point
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -429,7 +420,6 @@ It's good practice to run `rosdep <https://docs.ros.org/en/independent/api/rosde
    .. group-tab:: Windows
 
       rosdep only runs on Linux, so you can skip ahead to next step.
-
 
 Still in the root of your workspace, ``ros2_ws``, build your new package:
 
@@ -513,11 +503,6 @@ Next steps
 
 Next you'll create another simple ROS 2 package using the service/client model.
 Again, you can choose to write it in either :doc:`C++ <Writing-A-Simple-Cpp-Service-And-Client>` or :doc:`Python <Writing-A-Simple-Py-Service-And-Client>`.
-
-Related content
----------------
-
-There are several ways you could write a publisher and subscriber in Python; check out the ``minimal_publisher`` and ``minimal_subscriber`` packages in the `ros2/examples <https://github.com/ros2/examples/tree/{REPOS_FILE_BRANCH}/rclpy/topics>`_ repo.
 
 Related content
 ---------------

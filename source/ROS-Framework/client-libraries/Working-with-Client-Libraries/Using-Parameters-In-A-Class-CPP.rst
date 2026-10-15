@@ -207,7 +207,6 @@ For that to work, the code in the constructor has to be changed to:
 The rest of the code remains the same.
 Once you run the node, you can then run ``ros2 param describe /minimal_param_node my_parameter`` to see the type and description.
 
-
 2.2 Add executable
 ~~~~~~~~~~~~~~~~~~
 
@@ -223,7 +222,6 @@ Below the dependency ``find_package(rclcpp REQUIRED)`` add the following lines o
         minimal_param_node
       DESTINATION lib/${PROJECT_NAME}
     )
-
 
 3 Build and run
 ^^^^^^^^^^^^^^^
@@ -334,7 +332,6 @@ You can also set the parameter in a launch file, but first you will need to add 
 Inside the ``ros2_ws/src/cpp_parameters/`` directory, create a new directory called ``launch``.
 In there, create a new file called ``cpp_parameters_launch.py``
 
-
 .. literalinclude:: launch/cpp_parameters_launch.py
   :language: python
 
@@ -436,12 +433,6 @@ Next steps
 ----------
 
 Now that you have some packages and ROS 2 systems of your own, the :doc:`next tutorial <Getting-Started-With-Ros2doctor>` will show you how to examine issues in your environment and systems in case you have problems.
-
-Related content
----------------
-
-* For more detailed information about using YAML files to load parameters, please refer to :ref:`this section <Parameters>` of Managing large projects tutorial.
-* If you want to learn, how to monitor and respond to parameter changes, check out :doc:`Monitoring for parameter changes (C++) <../../parameters/Working-with-parameters/Monitoring-For-Parameter-Changes-CPP>` tutorial.
 
 Related content
 ---------------

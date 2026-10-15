@@ -82,7 +82,6 @@ You can create your own custom interfaces in a CMake package, and then use it in
   It is good practice to keep ``.msg``, ``.srv``, and ``.action`` files in separate packages from the nodes that use them.
   This makes it easier to reuse the interface definitions across different packages.
 
-
 2 Defining an action
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -220,11 +219,6 @@ Next steps
 ----------
 
 Next, let's utilize your newly defined action interface by creating an action service and client (in :doc:`Python <Writing-an-Action-Server-Client/Py>` or :doc:`C++ <Writing-an-Action-Server-Client/Cpp>`).
-
-Related content
----------------
-
-For more detailed information about ROS actions, please refer to the `design article <http://design.ros2.org/articles/actions.html>`__.
 
 Related content
 ---------------

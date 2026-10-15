@@ -30,7 +30,6 @@ It accumulates the data passed on any number of topics, services and actions, th
 You can then replay the data to reproduce the results of your tests and experiments.
 Recording topics, services and actions is also a great way to share your work and allow others to recreate it.
 
-
 Prerequisites
 -------------
 
@@ -42,7 +41,6 @@ This tutorial talks about concepts covered in previous tutorials, like :doc:`nod
 It also uses the :doc:`turtlesim package <../../../../Get-Started/Introducing-Turtlesim/Introducing-Turtlesim>`, :doc:`Service Introspection Demo <../../../../Developer-Tools/Introspection-and-analysis/Service-Introspection>` and :doc:`Action Introspection Demo <../../actions/Working-with-actions/Action-Introspection>`.
 
 As always, don't forget to source ROS 2 in :doc:`every new terminal you open <../../../../Get-Started/Configuring-ROS2-Environment>`.
-
 
 Managing Topic Data
 -------------------
@@ -89,7 +87,6 @@ Let's also make a new directory to store our saved recordings, just as good prac
             $ md bag_files
             $ cd bag_files
 
-
 2 Choose a topic
 ^^^^^^^^^^^^^^^^
 
@@ -128,7 +125,6 @@ Use the arrow keys to move the turtle around, and you will see data being publis
     y: 0.0
     z: 0.0
     ---
-
 
 3 Record topics
 ^^^^^^^^^^^^^^^
@@ -273,7 +269,6 @@ Enter the command:
     Progress bar enabled at 3 Hz.
     Progress bar [?]: [R]unning, [P]aused, [B]urst, [D]elayed, [S]topped
     [INFO] [rosbag2_player]: Playback until timestamp: -1
-
 
     ====== Playback Progress ======
     [1751923361.427372456] Duration 0.00/48.47 [R]
@@ -657,7 +652,6 @@ Enter the command:
   Progress bar [?]: [R]unning, [P]aused, [B]urst, [D]elayed, [S]topped
   [INFO] [1744953720.702577680] [rosbag2_player]: Playback until timestamp: -1
 
-
   ====== Playback Progress ======
   [1744953656.281683207] Duration 9.02/9.02 [R]
 
@@ -733,14 +727,6 @@ Next steps
 
 You've completed the "Beginner: CLI Tools" tutorials!
 The next step is tackling the "Beginner: Client Libraries" tutorials, starting with :doc:`../../../client-libraries/Working-with-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace`.
-
-Related content
----------------
-
-A more thorough explanation of ``ros2 bag`` can be found in the README `here <https://github.com/ros2/rosbag2>`__.
-For more information on service recording and playback can be found in the design document `here <https://github.com/ros2/rosbag2/blob/{DISTRO}/docs/design/rosbag2_record_replay_service.md>`__.
-For more information on action recording and playback can be found in the design document `here <https://github.com/ros2/rosbag2/blob/{DISTRO}/docs/design/rosbag2_record_replay_action.md>`__.
-For more information on QoS compatibility and ``ros2 bag``, see :doc:`../../../../Developer-Tools/Testing/Overriding-QoS-Policies-For-Recording-And-Playback`.
 
 Related content
 ---------------

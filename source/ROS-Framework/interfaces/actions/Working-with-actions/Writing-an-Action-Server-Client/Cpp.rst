@@ -48,7 +48,6 @@ As we saw in the :doc:`../../../../client-libraries/Working-with-Client-Librarie
 
 Go into the action workspace you created in the :doc:`previous tutorial <../Creating-an-Action>` (remember to source the workspace), and create a new package for the C++ action server:
 
-
 .. tabs::
 
   .. group-tab:: Linux
@@ -394,13 +393,6 @@ Summary
 -------
 
 In this tutorial, you put together a C++ action server and action client line by line, and configured them to exchange goals, feedback, and results.
-
-Related content
----------------
-
-* There are several ways you could write an action server and client in C++; check out the ``minimal_action_server`` and ``minimal_action_client`` packages in the `ros2/examples <https://github.com/ros2/examples/tree/{REPOS_FILE_BRANCH}/rclcpp>`_ repo.
-
-* For more detailed information about ROS actions, please refer to the `design article <http://design.ros2.org/articles/actions.html>`__.
 
 Related content
 ---------------

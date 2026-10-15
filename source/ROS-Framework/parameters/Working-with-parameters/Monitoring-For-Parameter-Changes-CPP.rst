@@ -40,7 +40,6 @@ Tasks
 
 In this tutorial, you will create a new package to contain some sample code, write some C++ code to use the ParameterEventHandler class, and test the resulting code.
 
-
 1 Create a package
 ^^^^^^^^^^^^^^^^^^
 
@@ -168,7 +167,6 @@ Following the ``SampleNodeWithParameters`` is a typical ``main`` function which 
       return 0;
     }
 
-
 2.2 Add executable
 ~~~~~~~~~~~~~~~~~~
 
@@ -285,7 +283,6 @@ First update the constructor to add the following code after the existing code:
     auto remote_param_name = std::string("a_double_param");
     cb_handle2_ = param_subscriber_->add_parameter_callback(remote_param_name, cb2, remote_node_name);
 
-
 Then add another member variable, ``cb_handle2`` for the additional callback handle:
 
 .. code-block:: C++
@@ -295,7 +292,6 @@ Then add another member variable, ``cb_handle2`` for the additional callback han
     std::shared_ptr<rclcpp::ParameterCallbackHandle> cb_handle_;
     std::shared_ptr<rclcpp::ParameterCallbackHandle> cb_handle2_;  // Add this
   };
-
 
 In a terminal, navigate back to the root of your workspace, ``ros2_ws``, and build your updated package as before:
 
@@ -461,11 +457,6 @@ Summary
 You created a node with a parameter and used the ParameterEventHandler class to set a callback to monitor changes to that parameter.
 You also used the same class to monitor changes to a remote node, and to monitor all parameters in a single event callback.
 The ParameterEventHandler is a convenient way to monitor for parameter changes so that you can then respond to the updated values.
-
-Related content
----------------
-
-To learn how to adapt ROS 1 parameter files for ROS 2, see the :doc:`Migrating YAML parameter files from ROS 1 to ROS2 <../../../Migration-and-Upgrades/Migrating-from-ROS1/Migrating-Parameters>` tutorial.
 
 Related content
 ---------------

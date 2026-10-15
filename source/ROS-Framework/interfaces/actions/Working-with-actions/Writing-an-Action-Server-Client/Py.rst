@@ -232,13 +232,11 @@ In another terminal, run the action client.
 
       $ python3 fibonacci_action_client.py
 
-
   .. group-tab:: macOS
 
     .. code-block:: console
 
       $ python3 fibonacci_action_client.py
-
 
   .. group-tab:: Windows
 
@@ -360,13 +358,6 @@ Summary
 -------
 
 In this tutorial, you put together a Python action server and action client line by line, and configured them to exchange goals, feedback, and results.
-
-Related content
----------------
-
-* There are several ways you could write an action server and client in Python; check out the ``minimal_action_server`` and ``minimal_action_client`` packages in the `ros2/examples <https://github.com/ros2/examples/tree/{REPOS_FILE_BRANCH}/rclpy/actions>`_ repo.
-
-* For more detailed information about ROS actions, please refer to the `design article <http://design.ros2.org/articles/actions.html>`__.
 
 Related content
 ---------------

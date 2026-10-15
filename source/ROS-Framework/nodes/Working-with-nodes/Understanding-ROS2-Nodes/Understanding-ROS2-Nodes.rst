@@ -198,11 +198,6 @@ Topics are one of the communication types that connects nodes.
 Related content
 ---------------
 
-The :doc:`../../../About-Nodes` page adds some more detail to the concept of nodes.
-
-Related content
----------------
-
 Related articles:
 
 .. ros-related-articles::

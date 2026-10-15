@@ -104,7 +104,6 @@ Inside the ``ros2_ws/src/py_srvcli/py_srvcli`` directory, create a new file call
   from rclpy.executors import ExternalShutdownException
   from rclpy.node import Node
 
-
   class MinimalService(Node):
 
       def __init__(self):
@@ -117,7 +116,6 @@ Inside the ``ros2_ws/src/py_srvcli/py_srvcli`` directory, create a new file call
 
           return response
 
-
   def main():
       try:
           with rclpy.init():
@@ -126,7 +124,6 @@ Inside the ``ros2_ws/src/py_srvcli/py_srvcli`` directory, create a new file call
               rclpy.spin(minimal_service)
       except (KeyboardInterrupt, ExternalShutdownException):
           pass
-
 
   if __name__ == '__main__':
       main()
@@ -190,7 +187,6 @@ Inside the ``ros2_ws/src/py_srvcli/py_srvcli`` directory, create a new file call
   from rclpy.executors import ExternalShutdownException
   from rclpy.node import Node
 
-
   class MinimalClientAsync(Node):
 
       def __init__(self):
@@ -205,7 +201,6 @@ Inside the ``ros2_ws/src/py_srvcli/py_srvcli`` directory, create a new file call
           self.req.b = 1
           return self.cli.call_async(self.req)
 
-
   def main(args=None):
       try:
           with rclpy.init(args=args):
@@ -219,10 +214,8 @@ Inside the ``ros2_ws/src/py_srvcli/py_srvcli`` directory, create a new file call
       except (KeyboardInterrupt, ExternalShutdownException):
           pass
 
-
   if __name__ == '__main__':
       main()
-
 
 3.1 Examine the code
 ~~~~~~~~~~~~~~~~~~~~
@@ -320,7 +313,6 @@ It's good practice to run ``rosdep`` in the root of your workspace (``ros2_ws``)
 
       rosdep only runs on Linux, so you can skip ahead to next step.
 
-
 Navigate back to the root of your workspace, ``ros2_ws``, and build your new package:
 
 .. code-block:: console
@@ -376,7 +368,6 @@ You will see that it published log messages when it received the request:
 
 Enter ``Ctrl+C`` in the server terminal to stop the node from spinning.
 
-
 Summary
 -------
 
@@ -388,15 +379,6 @@ Next steps
 
 In the last few tutorials you've been utilizing interfaces to pass data across topics and services.
 Next, you'll learn how to :doc:`create custom interfaces <Custom-ROS2-Interfaces>`.
-
-Related content
----------------
-
-* There are several ways you could write a service and client in Python; check out the ``minimal_client`` and ``minimal_service`` packages in the `ros2/examples <https://github.com/ros2/examples/tree/{REPOS_FILE_BRANCH}/rclpy/services>`_ repo.
-
-* In this tutorial, you used the ``call_async()`` API in your client node to call the service.
-  There is another service call API available for Python called synchronous calls.
-  We do not recommend using synchronous calls, but if you'd like to learn more about them, read the guide to :doc:`Synchronous vs. asynchronous clients <../../interfaces/services/Working-with-services/Sync-Vs-Async>`.
 
 Related content
 ---------------

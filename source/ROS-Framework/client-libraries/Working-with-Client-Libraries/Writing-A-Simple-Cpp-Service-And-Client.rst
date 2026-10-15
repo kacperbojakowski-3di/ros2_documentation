@@ -30,7 +30,6 @@ The structure of the request and response is determined by a ``.srv`` file.
 
 The example used here is a simple integer addition system; one node requests the sum of two integers, and the other responds with the result.
 
-
 Prerequisites
 -------------
 
@@ -79,7 +78,6 @@ As always, though, make sure to add the description, maintainer email and name, 
   <description>C++ client server tutorial</description>
   <maintainer email="you@email.com">Your Name</maintainer>
   <license>Apache-2.0</license>
-
 
 2 Write the service node
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -235,7 +233,6 @@ Inside the ``ros2_ws/src/cpp_srvcli/src`` directory, create a new file called ``
     return 0;
   }
 
-
 3.1 Examine the code
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -270,7 +267,6 @@ Its structure is defined by the ``.srv`` file mentioned earlier.
   request->a = 41;
   request->b = 1;
 
-
 Then the client sends its request, and the node spins until it receives its response, or fails.
 
 3.2 Add executable
@@ -301,7 +297,6 @@ After removing some unnecessary boilerplate from the automatically generated fil
 
   ament_package()
 
-
 4 Build and run
 ^^^^^^^^^^^^^^^
 
@@ -322,7 +317,6 @@ It's good practice to run ``rosdep`` in the root of your workspace (``ros2_ws``)
   .. group-tab:: Windows
 
       rosdep only runs on Linux, so you can skip ahead to next step.
-
 
 Navigate back to the root of your workspace, ``ros2_ws``, and build your new package:
 
@@ -407,11 +401,6 @@ Next steps
 
 In the last few tutorials you've been utilizing interfaces to pass data across topics and services.
 Next, you'll learn how to :doc:`create custom interfaces <Custom-ROS2-Interfaces>`.
-
-Related content
----------------
-
-* There are several ways you could write a service and client in C++; check out the ``minimal_service`` and ``minimal_client`` packages in the `ros2/examples <https://github.com/ros2/examples/tree/{REPOS_FILE_BRANCH}/rclcpp/services>`_ repo.
 
 Related content
 ---------------

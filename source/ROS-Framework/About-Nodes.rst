@@ -44,9 +44,5 @@ Related articles:
 
 Related packages:
 
-* `demo_nodes_cpp <https://docs.ros.org/en/rolling/p/demo_nodes_cpp/>`__
-* `demo_nodes_py <https://docs.ros.org/en/rolling/p/demo_nodes_py/>`__
-* `turtlesim <https://docs.ros.org/en/rolling/p/turtlesim/>`__
-
 .. ros-related-packages::
 

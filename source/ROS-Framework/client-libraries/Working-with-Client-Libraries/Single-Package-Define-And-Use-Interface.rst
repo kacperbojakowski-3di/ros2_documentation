@@ -183,7 +183,6 @@ In ``more_interfaces/src`` create a file called ``publish_address_book.cpp`` and
     rclcpp::TimerBase::SharedPtr timer_;
   };
 
-
   int main(int argc, char * argv[])
   {
     rclcpp::init(argc, argv);
@@ -469,11 +468,6 @@ Next steps
 
 Next you will create a simple ROS 2 package with a custom parameter that you will learn to set from a launch file.
 Again, you can choose to write it in either :doc:`C++ <Using-Parameters-In-A-Class-CPP>` or :doc:`Python <Using-Parameters-In-A-Class-Python>`.
-
-Related content
----------------
-
-There are `several design articles <https://design.ros2.org/#interfaces>`_ on ROS 2 interfaces and the IDL (interface definition language).
 
 Related content
 ---------------

@@ -112,8 +112,6 @@ Inside the ``ros2_ws/src/python_parameters/python_parameters`` directory, create
     if __name__ == '__main__':
         main()
 
-
-
 2.1 Examine the code
 ~~~~~~~~~~~~~~~~~~~~
 The ``import`` statements at the top are used to import the package dependencies.
@@ -168,7 +166,6 @@ Here ROS 2 is initialized, an instance of the ``MinimalParam`` class is construc
 
     if __name__ == '__main__':
         main()
-
 
 2.1.1 (Optional) Add ParameterDescriptor
 """"""""""""""""""""""""""""""""""""""""
@@ -226,7 +223,6 @@ Add the following line within the ``console_scripts`` brackets of the ``entry_po
   },
 
 Don't forget to save.
-
 
 3 Build and run
 ^^^^^^^^^^^^^^^
@@ -447,12 +443,6 @@ Next steps
 ----------
 
 Now that you have some packages and ROS 2 systems of your own, the :doc:`next tutorial <Getting-Started-With-Ros2doctor>` will show you how to examine issues in your environment and systems in case you have problems.
-
-Related content
----------------
-
-* For more detailed information about using YAML files to load parameters, please refer to :ref:`this section <Parameters>` of Managing large projects tutorial.
-* If you want to learn, how to monitor and respond to parameter changes, check out :doc:`Monitoring for parameter changes (Python) <../../parameters/Working-with-parameters/Monitoring-For-Parameter-Changes-Python>` tutorial.
 
 Related content
 ---------------

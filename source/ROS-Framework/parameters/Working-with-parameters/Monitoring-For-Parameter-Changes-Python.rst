@@ -39,7 +39,6 @@ Tasks
 
 In this tutorial, you will create a new package to contain some sample code, write some Python code to use the ParameterEventHandler class, and test the resulting code.
 
-
 1 Create a package
 ^^^^^^^^^^^^^^^^^^
 
@@ -84,7 +83,6 @@ Inside the ``ros2_ws/src/python_parameter_event_handler/python_parameter_event_h
 
     from rclpy.parameter_event_handler import ParameterEventHandler
 
-
     class SampleNodeWithParameters(Node):
         def __init__(self):
             super().__init__('node_with_parameters')
@@ -101,7 +99,6 @@ Inside the ``ros2_ws/src/python_parameter_event_handler/python_parameter_event_h
 
         def callback(self, p: rclpy.parameter.Parameter) -> None:
             self.get_logger().info(f"Received an update to parameter: {p.name}: {rclpy.parameter.parameter_value_to_python(p.value)}")
-
 
     def main():
         try:
@@ -139,7 +136,6 @@ Next, the code creates a ``ParameterEventHandler`` that will be used to monitor 
 
             self.handler = ParameterEventHandler(self)
 
-
 Finally, we add a parameter callback and get a callback handler for the new callback.
 
 .. note::
@@ -161,7 +157,6 @@ For the callback function, we use the ``callback`` method of the ``SampleNodeWit
         def callback(self, p: rclpy.parameter.Parameter) -> None:
             self.get_logger().info(f"Received an update to parameter: {p.name}: {rclpy.parameter.parameter_value_to_python(p.value)}")
 
-
 Following the ``SampleNodeWithParameters`` is a typical ``main`` function which initializes ROS, spins the sample node so that it can send and receive messages, and then shuts down after the user enters ^C at the console.
 
 .. code-block:: Python
@@ -173,7 +168,6 @@ Following the ``SampleNodeWithParameters`` is a typical ``main`` function which 
                 rclpy.spin(node)
         except (KeyboardInterrupt, ExternalShutdownException):
             pass
-
 
 2.2 Add an entry point
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -197,7 +191,6 @@ Add the following line within the ``console_scripts`` brackets of the ``entry_po
           'node_with_parameters = python_parameter_event_handler.parameter_event_handler:main',
       ],
   },
-
 
 3 Build and run
 ^^^^^^^^^^^^^^^
@@ -294,7 +287,6 @@ First update the constructor to add the following code after the existing code:
             node_name="parameter_blackboard",
             callback=self.callback,
         )
-
 
 In a terminal, navigate back to the root of your workspace, ``ros2_ws``, and build your updated package as before:
 
@@ -453,11 +445,6 @@ Summary
 You created a node with a parameter and used the ParameterEventHandler class to set a callback to monitor changes to that parameter.
 You also used the same class to monitor changes to a remote node, and to monitor all parameters in a single event callback.
 The ParameterEventHandler is a convenient way to monitor for parameter changes so that you can then respond to the updated values.
-
-Related content
----------------
-
-To learn how to adapt ROS 1 parameter files for ROS 2, see the :doc:`Migrating YAML parameter files from ROS 1 to ROS2 <../../../Migration-and-Upgrades/Migrating-from-ROS1/Migrating-Parameters>` tutorial.
 
 Related content
 ---------------

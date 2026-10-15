@@ -66,7 +66,6 @@ Open another terminal and run:
 
   $ ros2 run turtlesim turtle_teleop_key
 
-
 2 Use actions
 ^^^^^^^^^^^^^
 
@@ -296,9 +295,7 @@ Keep an eye on the turtlesim window, and enter the following command into your t
 
   Goal finished with status: SUCCEEDED
 
-
 You should see the turtle rotating.
-
 
 All goals have a unique ID, shown in the return message.
 You can also see the result, a field with the name ``delta``, which is the displacement to the starting position.
@@ -422,11 +419,6 @@ Next steps
 
 Now you've covered all of the core ROS 2 concepts.
 The last few tutorials in this set will introduce you to some tools and techniques that will make using ROS 2 easier, starting with :doc:`../../../../nodes/Working-with-nodes/Using-Rqt-Console/Using-Rqt-Console`.
-
-Related content
----------------
-
-You can read more about the design decisions behind actions in ROS 2 `here <https://design.ros2.org/articles/actions.html>`__.
 
 Related content
 ---------------

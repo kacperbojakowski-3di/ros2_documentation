@@ -97,7 +97,6 @@ In this tutorial, the parameter services will be omitted from the discussion.
 For now, let's focus on the turtlesim-specific services, ``/clear``, ``/kill``, ``/reset``, ``/spawn``, ``/turtle1/set_pen``, ``/turtle1/teleport_absolute``, and ``/turtle1/teleport_relative``.
 You may recall interacting with some of these services using rqt in the :doc:`Use turtlesim, ros2, and rqt <../../../../../Get-Started/Introducing-Turtlesim/Introducing-Turtlesim>` tutorial.
 
-
 3 ros2 service type
 ^^^^^^^^^^^^^^^^^^^
 
@@ -413,11 +412,6 @@ Next steps
 ----------
 
 In the next tutorial, :doc:`../../../../parameters/Working-with-parameters/Understanding-ROS2-Parameters/Understanding-ROS2-Parameters`, you will learn about configuring node settings.
-
-Related content
----------------
-
-Check out `this tutorial <https://discourse.ubuntu.com/t/call-services-in-ros-2/15261>`_; it's an excellent realistic application of ROS services using a Robotis robot arm.
 
 Related content
 ---------------

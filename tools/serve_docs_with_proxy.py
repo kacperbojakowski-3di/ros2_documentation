@@ -103,6 +103,11 @@ class DocsWithProxyHandler(SimpleHTTPRequestHandler):
 
         payload = self.cache.get(distro)
         if payload is None:
+            local = Path(self.directory) / '_static' / 'rosdistro_cache' / f'{distro}-cache.yaml.gz'
+            if local.is_file():
+                payload = local.read_bytes()
+                self.cache.put(distro, payload)
+        if payload is None:
             try:
                 payload = _fetch_upstream(distro, self.upstream_timeout)
             except urllib.error.HTTPError as exc:

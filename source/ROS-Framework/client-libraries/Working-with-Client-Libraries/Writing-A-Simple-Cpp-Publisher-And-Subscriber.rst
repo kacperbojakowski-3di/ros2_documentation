@@ -58,7 +58,6 @@ Your terminal will return a message verifying the creation of your package ``cpp
 Navigate into ``ros2_ws/src/cpp_pubsub/src``.
 Recall that this is the directory in any CMake package where the source files containing executables belong.
 
-
 2 Write the publisher node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -452,7 +451,6 @@ It's good practice to run ``rosdep`` in the root of your workspace (``ros2_ws``)
 
       rosdep only runs on Linux, so you can skip ahead to next step.
 
-
 Still in the root of your workspace, ``ros2_ws``, build your new package:
 
 .. tabs::
@@ -534,11 +532,6 @@ Next steps
 
 Next you'll create another simple ROS 2 package using the service/client model.
 Again, you can choose to write it in either :doc:`C++ <Writing-A-Simple-Cpp-Service-And-Client>` or :doc:`Python <Writing-A-Simple-Py-Service-And-Client>`.
-
-Related content
----------------
-
-There are several ways you could write a publisher and subscriber in C++; check out the ``minimal_publisher`` and ``minimal_subscriber`` packages in the `ros2/examples <https://github.com/ros2/examples/tree/{REPOS_FILE_BRANCH}/rclcpp/topics>`_ repo.
 
 Related content
 ---------------
