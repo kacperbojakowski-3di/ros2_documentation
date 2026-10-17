@@ -42,90 +42,90 @@ Steps
 1 Create a package
 ^^^^^^^^^^^^^^^^^^
 
-Start by creating a package to hold the battery-monitor node that you will build in the next step.
+Create a package to hold the battery-monitor node that you build in the next step.
 
-Open a terminal, source your ROS installation, and move into the ``src`` directory of your workspace.
+#. Open a terminal, source your ROS installation, and move into the ``src`` directory of your workspace.
 
-Create a Python package for the battery monitor:
+#. Create a Python package for the battery monitor:
 
-.. code-block:: console
+   .. code-block:: console
 
-  $ ros2 pkg create --build-type ament_python --license Apache-2.0 battery_logging --dependencies rclpy
+     $ ros2 pkg create --build-type ament_python --license Apache-2.0 battery_logging --dependencies rclpy
 
-Your terminal returns a message confirming that the ``battery_logging`` package and its files were created.
+   Your terminal returns a message confirming that the ``battery_logging`` package and its files were created.
 
 2 Write the battery monitor node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Add a node that logs at each severity level as a simulated battery drains.
-That gives you controlled messages to inspect with the CLI in the later steps.
+Write a node that logs at each severity level as a simulated battery drains.
+The node gives you controlled messages to inspect with the CLI in the later steps.
 
-Navigate into the package module directory:
+#. Navigate into the package module directory:
 
-.. code-block:: console
+   .. code-block:: console
 
-  $ cd battery_logging/battery_logging
+     $ cd battery_logging/battery_logging
 
-Create a file named ``battery_monitor.py`` and paste the following code:
+#. Create a file named ``battery_monitor.py`` and paste the following code:
 
-.. code-block:: python
+   .. code-block:: python
 
-  import rclpy
-  from rclpy.node import Node
-
-
-  class BatteryMonitor(Node):
-
-      def __init__(self):
-          super().__init__('battery_monitor')
-          self.level = 100
-          self.warn_threshold = 30
-          self.error_threshold = 10
-          self.warned = False
-          self.errored = False
-
-          self.get_logger().info(
-              f'Battery monitor started, initial level {self.level}%')
-          self.timer = self.create_timer(0.5, self.timer_callback)
-
-      def timer_callback(self):
-          self.get_logger().debug(f'Battery level: {self.level}%')
-
-          if self.level <= 0:
-              self.get_logger().fatal(
-                  'Battery depleted, shutting down battery monitor')
-              raise SystemExit
-
-          if self.level <= self.error_threshold and not self.errored:
-              self.get_logger().error(
-                  f'Battery critically low at {self.level}%, stop immediately')
-              self.errored = True
-          elif self.level <= self.warn_threshold and not self.warned:
-              self.get_logger().warning(
-                  'Battery low, please return to dock')
-              self.warned = True
-
-          self.level -= 5
+     import rclpy
+     from rclpy.node import Node
 
 
-  def main(args=None):
-      rclpy.init(args=args)
-      node = BatteryMonitor()
-      try:
-          rclpy.spin(node)
-      except (SystemExit, KeyboardInterrupt):
-          pass
-      finally:
-          node.get_logger().info('Battery monitor shutting down')
-          node.destroy_node()
-          if rclpy.ok():
-              rclpy.shutdown()
+     class BatteryMonitor(Node):
+
+         def __init__(self):
+             super().__init__('battery_monitor')
+             self.level = 100
+             self.warn_threshold = 30
+             self.error_threshold = 10
+             self.warned = False
+             self.errored = False
+
+             self.get_logger().info(
+                 f'Battery monitor started, initial level {self.level}%')
+             self.timer = self.create_timer(0.5, self.timer_callback)
+
+         def timer_callback(self):
+             self.get_logger().debug(f'Battery level: {self.level}%')
+
+             if self.level <= 0:
+                 self.get_logger().fatal(
+                     'Battery depleted, shutting down battery monitor')
+                 raise SystemExit
+
+             if self.level <= self.error_threshold and not self.errored:
+                 self.get_logger().error(
+                     f'Battery critically low at {self.level}%, stop immediately')
+                 self.errored = True
+             elif self.level <= self.warn_threshold and not self.warned:
+                 self.get_logger().warning(
+                     'Battery low, please return to dock')
+                 self.warned = True
+
+             self.level -= 5
 
 
-  if __name__ == '__main__':
-      main()
+     def main(args=None):
+         rclpy.init(args=args)
+         node = BatteryMonitor()
+         try:
+             rclpy.spin(node)
+         except (SystemExit, KeyboardInterrupt):
+             pass
+         finally:
+             node.get_logger().info('Battery monitor shutting down')
+             node.destroy_node()
+             if rclpy.ok():
+                 rclpy.shutdown()
 
-Save the file.
+
+     if __name__ == '__main__':
+         main()
+
+#. Save the file.
 
 The node does the following:
 
@@ -141,27 +141,30 @@ The node does the following:
 3 Add an entry point
 ^^^^^^^^^^^^^^^^^^^^
 
-ROS needs an entry point so ``ros2 run`` can start your node by name.
-Navigate one level up to the package root, where ``setup.py`` and ``package.xml`` were created.
-Open ``setup.py``.
-Fill in the ``maintainer``, ``maintainer_email``, ``description``, and ``license`` fields to match your ``package.xml``, then add a console script entry:
+ROS needs an entry point so that ``ros2 run`` can start your node by name.
 
-.. code-block:: python
+#. Navigate one level up to the package root, where ``setup.py`` and ``package.xml`` were created.
 
-  entry_points={
-      'console_scripts': [
-          'battery_monitor = battery_logging.battery_monitor:main',
-      ],
-  },
+#. Open ``setup.py``.
 
-Save the file.
+#. Fill in the ``maintainer``, ``maintainer_email``, ``description``, and ``license`` fields to match your ``package.xml``, then add a console script entry:
+
+   .. code-block:: python
+
+     entry_points={
+         'console_scripts': [
+             'battery_monitor = battery_logging.battery_monitor:main',
+         ],
+     },
+
+#. Save the file.
 
 4 Build and source the workspace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Build the package so the new entry point is installed, then source the workspace overlay so ``ros2 run`` can find it.
+Build the package to install the new entry point, then source the workspace overlay so that ``ros2 run`` can find it.
 
-Return to the root of your workspace and build:
+Return to the root of your workspace and run the following:
 
 .. tabs::
 
@@ -192,7 +195,7 @@ Return to the root of your workspace and build:
 5 Run the node with the default log level
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-First run the node with no log-level override.
+Run the node with no log-level override.
 That shows which severities appear under the default filter.
 
 .. code-block:: console
